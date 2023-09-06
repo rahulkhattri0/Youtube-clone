@@ -8,7 +8,7 @@ const WatchPage = () => {
         <iframe width="1200"
          height="600" 
          src={"https://www.youtube.com/embed/" + vidId }
-         title="First Day at Microsoft Bangalore 💯 | Day in the life working from Bangalore office" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+         title="..." frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
          </iframe>
     </div>
   )
