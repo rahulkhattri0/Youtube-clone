@@ -1,0 +1,4 @@
+/* write your css here */
+.card-style {
+    @apply p-2 m-3 shadow-lg w-[300px] h-[300px];
+}
