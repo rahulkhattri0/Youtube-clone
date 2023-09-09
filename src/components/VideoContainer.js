@@ -16,12 +16,12 @@ const VideoContainer = () => {
         setVideos(data.items)
     }
   return (
-    <div className='flex flex-wrap justify-center items-baseline'>
+    <div className='flex flex-wrap justify-center items-baseline mt-24'>
         {
             videos.length === 0 ? <Shimmer/> : (
                 videos.map((video)=>
-                <Link to={`/watch?v=${video.id}`}>
-                    <VideoCard key={video.id} info={video}/>
+                <Link key={video.id} to={`/watch?v=${video.id}`}>
+                    <VideoCard info={video}/>
                 </Link>
             )
             )
