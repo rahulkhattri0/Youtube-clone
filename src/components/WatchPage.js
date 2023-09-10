@@ -4,7 +4,7 @@ const WatchPage = () => {
   const [searchParams] = useSearchParams()
   const vidId = searchParams.get("v")
   return (
-    <div className='m-2 p-2'>
+    <div className='m-2 p-2 mt-24'>
         <iframe width="1200"
          height="600" 
          src={"https://www.youtube.com/embed/" + vidId }

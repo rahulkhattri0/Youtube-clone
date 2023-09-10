@@ -5,10 +5,14 @@ import {ImSearch} from 'react-icons/im'
 import { Link, useNavigate } from 'react-router-dom'
 import { YOUTUBE_SEARCH_SUGGESTIONS_API } from '../utils/constants'
 import {BiSearchAlt} from 'react-icons/bi'
+import { useDispatch, useSelector } from 'react-redux'
+import { addEntry } from '../redux/slices/cacheResults'
 const Header = () => {
     const navigate = useNavigate()
     const [searchQuery,setSearchQuery] = useState("")
     const [suggestions,setSuggestions] = useState([])
+    const cacheResults = useSelector((store)=>store.cacheResults)
+    const dispatch = useDispatch()
     /*debouncing logic
     useEffect will we called after every re-render(basically when search query changes) 
     and the timer will be created but if the user presses a key
@@ -18,7 +22,15 @@ const Header = () => {
     a new timer is created,which waits for 200ms and after 200ms makes the
     */
    useEffect(()=>{
-    const timer = setTimeout(()=>getSuggestions(),200)
+    const timer = setTimeout(()=>{
+        if(cacheResults[searchQuery]){
+            setSuggestions(cacheResults[searchQuery])
+        }
+        else{
+            console.log("enter")
+            getSuggestions()
+        }
+    },200)
     return () => {
         clearTimeout(timer)
     }
@@ -29,6 +41,9 @@ const Header = () => {
     const data = await response.json()
     console.log(data[1]) 
     setSuggestions(data[1])
+    dispatch(addEntry({
+        [searchQuery] : data[1]
+    }))
    }
   return (
         <div className='flex flex-row justify-between items-center p-2 shadow-lg fixed top-0 w-full bg-white'>
