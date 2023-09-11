@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { YOUTUBE_SEARCH_VIDS } from '../utils/constants'
-import VideoCard from './VideoCard'
+import SearchVideoCard from './SearchVideoCard'
 
 const SearchResults = () => {
     const [searchParams] = useSearchParams()
@@ -18,11 +18,13 @@ const SearchResults = () => {
         setSearchResults(data.items)
     }
   return (
-    <div className='flex flex-col items-center mt-24'>
+    <div className='flex flex-col mx-auto mt-24 w-[90%]'>
         {
             searchResults.map((res)=>{
                 return (
-                    <VideoCard key={res.id.videoId} info={res}/>
+                    <Link to={'/watch?v='+res.id.videoId} key={res.id.videoId}>
+                        <SearchVideoCard info={res}/>
+                    </Link>
                 )
             })
         }

@@ -9,7 +9,7 @@ const VideoCard = ({info}) => {
         <div className='flex flex-col gap-y-1'>
             <p className='font-bold'>{title}</p>
             <p>{channelTitle}</p>
-            <p>{statistics?.viewCount}</p>
+            <p className='text-sm'>{statistics?.viewCount + " views"}</p>
         </div>
     </div>
   )

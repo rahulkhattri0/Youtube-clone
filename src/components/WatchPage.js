@@ -22,20 +22,29 @@ const WatchPage = () => {
               <LiveMessages/>
             </div>
             <div className='flex rounded-md w-full absolute bottom-0'>
-              <input type='text'
-              className='w-[80%] border border-black'
-              placeholder='chat...'
-              value={liveMsg}
-              onChange={(event)=>setLiveMsg(event.target.value)}
-              />
-              <button className='p-1 bg-green-300 text-white rounded-md w-[20%]'
-              onClick={()=>{
-                dispatch(addMessages({
-                  name : "Rahul Khattri",
-                  text : liveMsg
-                }))
-                setLiveMsg("")
-              }}>Send</button>
+              <form onSubmit={
+                (event)=>{
+                  event.preventDefault()
+                  liveMsg.length>0 &&
+                  dispatch(addMessages({
+                    name : "Rahul Khattri",
+                    text : liveMsg
+                  }))
+                  setLiveMsg("")
+                }
+              }
+              className='w-full'>
+                <input type='text'
+                className='w-[80%] border border-black'
+                placeholder='chat...'
+                value={liveMsg}
+                onChange={(event)=>setLiveMsg(event.target.value)}
+                />
+                <button 
+                className='p-1 bg-green-300 text-white rounded-md w-[20%]'
+                type='submit'>Send</button>
+              </form>
+              
             </div>
          </div>
          
