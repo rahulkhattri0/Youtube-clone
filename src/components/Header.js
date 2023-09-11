@@ -79,12 +79,15 @@ const Header = () => {
                         {
                             suggestions.map((suggestion,idx)=>{
                                 return (
-                                    <Link key={idx} to={`results?search_query=${suggestion}`}>
-                                        <div className='flex gap-x-1 items-center hover:bg-slate-300 border-b-2 border-gray-200 m-2 p-1 rounded-md'>
-                                            <BiSearchAlt/>
-                                            <p onClick={()=>setSearchQuery("")}>{suggestion}</p>
-                                        </div>
-                                    </Link>     
+                                    <div key={idx} 
+                                    className='cursor-pointer flex gap-x-1 items-center hover:bg-slate-300 border-b-2 border-gray-200 m-2 p-1 rounded-md'
+                                    onClick={()=>{
+                                            setSearchQuery("")
+                                            navigate('results?search_query='+suggestion)
+                                    }}>
+                                        <BiSearchAlt/>
+                                        <p>{suggestion}</p>
+                                    </div>  
                                 )
                                 
                             })
