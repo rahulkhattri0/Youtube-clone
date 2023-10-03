@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { generateString } from "../../utils/idGenerator";
 
 const chatSlice = createSlice({
     name : "chat",
@@ -8,7 +9,10 @@ const chatSlice = createSlice({
     reducers : {
         addMessages : (state,action) => {
             state.messages.splice(20,1)
-            state.messages.unshift(action.payload)
+            state.messages.unshift({
+                message : action.payload,
+                id : generateString(6)
+            })
         },
         resetMessages : (state) => {
             state.messages = []

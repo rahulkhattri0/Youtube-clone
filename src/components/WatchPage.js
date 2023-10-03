@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSearchParams } from "react-router-dom";
 import LiveMessages from './LiveMessages';
 import { useDispatch } from 'react-redux';
 import { addMessages } from '../redux/slices/chatSlice';
 const WatchPage = () => {
+  
   const [searchParams] = useSearchParams()
   const vidId = searchParams.get("v")
   const [liveMsg,setLiveMsg] = useState("")

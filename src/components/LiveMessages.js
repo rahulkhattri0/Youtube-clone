@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import ChatMessages from './ChatMessages'
 import { addMessages, resetMessages } from '../redux/slices/chatSlice'
 import { RANDOM_MESSAGE_API, RANDOM_NAME_API } from '../utils/constants'
-import { generateString } from '../utils/idGenerator'
+
 const LiveMessages = () => {
     const chatMessages = useSelector((store)=>store.chat.messages)
     const dispatch = useDispatch()
@@ -36,7 +36,7 @@ const LiveMessages = () => {
     <>
         {
             chatMessages.map((message) => {
-                return <ChatMessages key={generateString(6)} message={message} />
+                return <ChatMessages key={message.id} message={message.message} />
             })
         }
     </>
