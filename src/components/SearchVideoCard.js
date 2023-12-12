@@ -7,7 +7,7 @@ const SearchVideoCard = ({info}) => {
     const date = publishTime.split("T")[0]
   return (
     <div className='border border-slate-300 rounded-md m-2 p-2'>
-        <div className='flex lg:flex-row md:flex-row sm:flex-col gap-y-1 gap-x-1'>
+        <div className='flex lg:flex-row md:flex-row flex-col gap-y-1 gap-x-1'>
             <img 
             src={thumbnails.medium.url}
             alt='Thumbnail img'

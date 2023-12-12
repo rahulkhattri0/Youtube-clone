@@ -12,14 +12,14 @@ const WatchPage = () => {
   const dispatch = useDispatch()
   return (
     <>
-      <div className='m-2 p-2 mt-24 lg:flex-row md:flex-row sm:flex-col flex gap-x-1 gap-y-2'>
+      <div className='m-2 p-2 mt-24 lg:flex-row md:flex-row flex-col flex gap-x-1 gap-y-2'>
           <iframe width="1200"
           height="600" 
           src={"https://www.youtube.com/embed/" + vidId }
-          className='lg:w-[70%] md:w-[60%] sm:w-[100%]'
+          className='lg:w-[70%] md:w-[60%] w-[100%]'
           title="..." allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">
           </iframe>
-          <div className='lg:w-[30%] md:w-[40%] sm:w-[100%] bg-slate-200 rounded-lg flex flex-col gap-y-1 justify-between'>
+          <div className='lg:w-[30%] md:w-[40%] w-[100%] bg-slate-200 rounded-lg flex flex-col gap-y-1 justify-between'>
               <p className='border bg-white border-black rounded-md p-1'>Live Chat</p>
               <div className='h-[530px] overflow-y-scroll flex flex-col-reverse'>
                 <LiveMessages/>
