@@ -21,9 +21,9 @@ const WatchPage = () => {
           </iframe>
           <div className='lg:w-[30%] md:w-[40%] sm:w-[100%] bg-slate-200 rounded-lg flex flex-col gap-y-1 justify-between'>
               <p className='border bg-white border-black rounded-md p-1'>Live Chat</p>
-              {/* <div className='h-[530px] overflow-y-scroll flex flex-col-reverse'>
+              <div className='h-[530px] overflow-y-scroll flex flex-col-reverse'>
                 <LiveMessages/>
-              </div> */}
+              </div>
               <div className='flex rounded-md'>
                 <form onSubmit={
                   (event)=>{
