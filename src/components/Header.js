@@ -23,18 +23,22 @@ const Header = () => {
     */
    useEffect(()=>{
     const timer = setTimeout(()=>{
-        if(cacheResults[searchQuery]){
-            setSuggestions(cacheResults[searchQuery])
+            if(!searchQuery){
+                setSuggestions([])
+            }
+            else{
+                if(cacheResults[searchQuery]){
+                    setSuggestions(cacheResults[searchQuery])
+                }
+                else{
+                    getSuggestions()
+                }
+            }        
+        },200)
+        return () => {
+            clearTimeout(timer)
         }
-        else{
-            console.log("enter")
-            getSuggestions()
-        }
-    },200)
-    return () => {
-        clearTimeout(timer)
-    }
-   },[searchQuery])
+    },[searchQuery])
    const getSuggestions = async () => {
     const response = await fetch(YOUTUBE_SEARCH_SUGGESTIONS_API + searchQuery)
     console.log("made the api call",response)
@@ -60,9 +64,9 @@ const Header = () => {
                 value={searchQuery}
                 onChange={(event)=>setSearchQuery(event.target.value)}
                 placeholder='Enter what you want to search...'
+                onBlur={()=>setSearchQuery("")}
                 />
                 <button className='p-2 border-gray-200 rounded-r-full bg-gray-200' onClick={()=>{
-                    setSearchQuery("")
                     navigate(`results?search_query=${searchQuery}`)
                 }}>
                     <ImSearch/>
@@ -82,7 +86,6 @@ const Header = () => {
                                     <div key={idx} 
                                     className='cursor-pointer flex gap-x-1 items-center hover:bg-slate-300 border-b-2 border-gray-200 m-2 p-1 rounded-md'
                                     onClick={()=>{
-                                            setSearchQuery("")
                                             navigate('results?search_query='+suggestion)
                                     }}>
                                         <BiSearchAlt/>
