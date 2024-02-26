@@ -34,7 +34,7 @@ const Comment = ({ data,setComments,comments,root_id }) => {
   const [showReplyInput,setShowReplyInput] = useState(false)
   const replyRef = useRef()
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-y-4 dark:text-white">
       <div className="flex flex-row items-center gap-x-4">
         <div className="flex flex-row gap-x-2 items-center"> 
           <FaUserCircle className="text-2xl"/>
@@ -57,7 +57,7 @@ const Comment = ({ data,setComments,comments,root_id }) => {
         }
         setShowReplyInput(false)
       }}>
-        <input type="text" className="w-[90%] rounded-md" placeholder="Add Reply..." autoFocus ref={replyRef} onBlur={()=>setShowReplyInput(false)}/>
+        <input type="text" className="w-[90%] dark:bg-slate-500 rounded-md p-1" placeholder="Add Reply..." autoFocus ref={replyRef} onBlur={()=>setShowReplyInput(false)}/>
         <button className="w-[10%] bg-green-400 rounded-md" type="submit">Add</button>
       </form>}
     </div>

@@ -19,8 +19,8 @@ const WatchPage = () => {
           className='lg:w-[70%] md:w-[60%] w-[100%]'
           title="..." allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">
           </iframe>
-          <div className='lg:w-[30%] md:w-[40%] w-[100%] bg-slate-200 rounded-lg flex flex-col gap-y-1 justify-between'>
-              <p className='border bg-white border-black rounded-md p-1'>Live Chat</p>
+          <div className='lg:w-[30%] md:w-[40%] w-[100%] bg-slate-200 dark:bg-gray-700 dark:text-white rounded-lg flex flex-col gap-y-1 justify-between'>
+              <p className='border bg-white border-black rounded-md p-1 dark:bg-slate-500'>Live Chat</p>
               <div className='h-[530px] overflow-y-scroll flex flex-col-reverse'>
                 <LiveMessages/>
               </div>
@@ -38,7 +38,7 @@ const WatchPage = () => {
                 }
                 className='w-full'>
                   <input type='text'
-                  className='w-[80%] border border-black'
+                  className='w-[80%] border border-black dark:bg-slate-500 p-1 rounded-md'
                   placeholder='chat...'
                   value={liveMsg}
                   onChange={(event)=>setLiveMsg(event.target.value)}
