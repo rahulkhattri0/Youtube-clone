@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { YOUTUBE_SEARCH_VIDS } from '../utils/constants'
 import SearchVideoCard from './SearchVideoCard'
+import Shimmer from './Shimmer'
 
 const SearchResults = () => {
     const [searchParams] = useSearchParams()
     const query = searchParams.get("search_query")
-    const [searchResults,setSearchResults] = useState([])
+    const [searchResults,setSearchResults] = useState(null)
     useEffect(()=>{
         fetchResults()
     },[query])
@@ -17,10 +18,13 @@ const SearchResults = () => {
         console.log("search res",data)
         setSearchResults(data.items)
     }
+    if(!searchResults){
+        return <Shimmer/>
+    }
   return (
     <div className='flex flex-col mx-auto mt-24 w-[90%]'>
         {
-            searchResults.map((res)=>{
+            searchResults.length===0 ? <p className='dark:text-white text-center'>No results!</p> :searchResults.map((res)=>{
                 return (
                     <Link to={'/watch?v='+res.id.videoId} key={res.id.videoId}>
                         <SearchVideoCard info={res}/>

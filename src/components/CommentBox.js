@@ -4,13 +4,14 @@ import Comment from "./Comment";
 const CommentBox = () => {
   const [comments,setComments] = useState([])
   const inputRef = useRef(null)
+  console.log('commentssss',comments)
   return (
     <div className="m-4 flex flex-col gap-y-2 dark:text-white">
         <p className="font-bold text-2xl">Comments:</p>
         { comments.length === 0 ? <p className="text-md">No Comments!</p> : <div className="p-2 flex flex-col gap-y-4 bg-slate-300 dark:bg-gray-700 rounded-lg">
-            {comments.map((c) => (
-                <Comment  root_id={c.root_id} key={c.id} data={c} comments={comments} setComments={setComments}/>
-            ))}
+            {comments.map((c) => {
+             return <Comment  root_id={c.root_id} key={c.id} data={c} comments={comments} setComments={setComments}/>
+            })}
         </div>}
         <form className="flex flex-row gap-x-2 p-4" onSubmit={(e)=>{
           e.preventDefault()
@@ -21,7 +22,6 @@ const CommentBox = () => {
               {
                 root_id : comments.length,
                 id : Date.now(),
-                name : "Rahul Khattri",
                 text : comment,
                 replies : []
               }

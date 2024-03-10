@@ -8,7 +8,7 @@ const LiveMessages = () => {
     const chatMessages = useSelector((store)=>store.chat.messages)
     const dispatch = useDispatch()
     useEffect(()=>{
-        //APi polling - basically mimicing waht youtube does - fetch chat messages after a interval of time
+        // APi polling - basically mimicing waht youtube does - fetch chat messages after a interval of time
         const interval = setInterval(()=>{
             addToChat() 
         },1500)

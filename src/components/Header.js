@@ -11,11 +11,14 @@ import { MdOutlineDarkMode } from "react-icons/md";
 import { toggleDarkTheme } from '../redux/slices/darkModeSlice'
 import { FaRegUserCircle } from "react-icons/fa";
 import { suggestionsReducer } from '../reducers/suggestionsReducer'
+import { CiLight } from "react-icons/ci";
+import WhosWatching from './WhosWatching'
 const Header = () => {
     const navigate = useNavigate()
     const [searchQuery,setSearchQuery] = useState("")
     const [suggestions,setSuggestions] = useState([])
     const [activeSuggestion,activeSuggestionDispatch] = useReducer(suggestionsReducer,-1)
+    const [whosWatching,setwhosWatching] = useState(false)
     const cacheResults = useSelector((store)=>store.cacheResults)
     const dispatch = useDispatch()
     const theme = useSelector((store)=>store.darkMode.theme)
@@ -29,6 +32,7 @@ const Header = () => {
     */
    useEffect(()=>{
     const timer = setTimeout(()=>{
+            activeSuggestionDispatch({type:'reset'})
             if(!searchQuery){
                 setSuggestions([])
             }
@@ -54,7 +58,6 @@ const Header = () => {
     dispatch(addEntry({
         [searchQuery] : data[1]
     }))
-    activeSuggestionDispatch({type:'reset'})
    }
    function handleKeyDown(event){
     if(suggestions.length>0){
@@ -64,10 +67,17 @@ const Header = () => {
         else if(event.key==='ArrowDown'){
             activeSuggestionDispatch({type:'next',payload:suggestions.length})
         }
-        else if(event.key==='Enter'){
-            activeSuggestion >= 0 && navigate(`results?search_query=${suggestions[activeSuggestion]}`)
-        }
     }
+    if(event.key==='Enter'){
+        handleNavigateToSearchPage(activeSuggestionDispatch,navigate,setSearchQuery,activeSuggestion>=0 ? suggestions[activeSuggestion] : searchQuery)        
+    }
+   }
+   function handleNavigateToSearchPage(activeSuggestionDispatch,navigate,setSearchQuery,searchQuery){
+        if(searchQuery){
+            activeSuggestionDispatch({type:'reset'})
+            setSearchQuery('')
+            navigate(`results?search_query=${searchQuery}`)
+        }
    }
   return (
         <div className='flex flex-row justify-between items-center p-2 shadow-lg fixed z-10 top-0 w-full bg-white dark:bg-gray-700'>
@@ -80,27 +90,26 @@ const Header = () => {
             </Link>
             <div className='w-1/2 flex flex-row'>
                 <input type='text' 
-                className='w-full border rounded-l-full border-gray-200 p-2'
+                className='w-full border rounded-l-full border-gray-200 dark:bg-gray-500 dark:text-white p-2'
                 value={searchQuery}
                 onChange={(event)=>setSearchQuery(event.target.value)}
                 placeholder='Enter what you want to search...'
-                onBlur={
-                    ()=>{
-                        setSearchQuery("")
-                        activeSuggestionDispatch({type:'reset'})
-                    }
-                }
                 onKeyDown={handleKeyDown}
+                onBlur={()=>{
+                    activeSuggestionDispatch({type:'reset'})
+                }}
                 />
                 <button className='p-2 border-gray-200 rounded-r-full bg-gray-200' onClick={()=>{
-                    navigate(`results?search_query=${searchQuery}`)
+                    handleNavigateToSearchPage(activeSuggestionDispatch,navigate,setSearchQuery,searchQuery)
                 }}>
                     <ImSearch/>
                 </button>
             </div>
             <div className='flex flex-row gap-x-2 items-center text-3xl'>
-                <MdOutlineDarkMode onClick={()=>dispatch(toggleDarkTheme())} className='cursor-pointer dark:text-white'/>
-                <FaRegUserCircle className='dark:text-white text-3xl'/>
+                <div onClick={()=>dispatch(toggleDarkTheme())} className='cursor-pointer font-bold dark:text-white'>
+                    {theme==='dark' ? <MdOutlineDarkMode/> : <CiLight/>}
+                </div>
+                <FaRegUserCircle className='dark:text-white text-3xl cursor-pointer' onClick={()=>setwhosWatching(true)}/>
             </div>
             
             {
@@ -112,7 +121,7 @@ const Header = () => {
                                     <div key={idx} 
                                     className={`cursor-pointer flex gap-x-1 items-center hover:bg-slate-300 border-b-2 border-gray-200 m-2 p-1 rounded-md ${activeSuggestion===idx ? 'bg-slate-400' : ''}`}
                                     onClick={()=>{
-                                            navigate('results?search_query='+suggestion)
+                                            handleNavigateToSearchPage(activeSuggestionDispatch,navigate,setSearchQuery,suggestion)
                                     }}>
                                         <BiSearchAlt/>
                                         <p>{suggestion}</p>
@@ -124,6 +133,7 @@ const Header = () => {
                     </div>
                 )
             }
+            {whosWatching && <WhosWatching setWhosWatching={setwhosWatching}/>}
         </div>
        
   )

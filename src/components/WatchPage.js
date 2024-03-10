@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSearchParams } from "react-router-dom";
 import LiveMessages from './LiveMessages';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addMessages } from '../redux/slices/chatSlice';
 import CommentBox from './CommentBox';
 const WatchPage = () => {
@@ -30,7 +30,7 @@ const WatchPage = () => {
                     event.preventDefault()
                     liveMsg.length>0 &&
                     dispatch(addMessages({
-                      name : "Rahul Khattri",
+                      name : 'user',
                       text : liveMsg
                     }))
                     setLiveMsg("")
