@@ -13,6 +13,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { suggestionsReducer } from '../reducers/suggestionsReducer'
 import { CiLight } from "react-icons/ci";
 import WhosWatching from './WhosWatching'
+import Suggestions from './Suggestions'
 const Header = () => {
     const navigate = useNavigate()
     const [searchQuery,setSearchQuery] = useState("")
@@ -95,9 +96,6 @@ const Header = () => {
                 onChange={(event)=>setSearchQuery(event.target.value)}
                 placeholder='Enter what you want to search...'
                 onKeyDown={handleKeyDown}
-                onBlur={()=>{
-                    activeSuggestionDispatch({type:'reset'})
-                }}
                 />
                 <button className='p-2 border-gray-200 rounded-r-full bg-gray-200' onClick={()=>{
                     handleNavigateToSearchPage(activeSuggestionDispatch,navigate,setSearchQuery,searchQuery)
@@ -114,23 +112,14 @@ const Header = () => {
             
             {
                 suggestions.length>0 && (
-                    <div className='bg-white z-10 absolute left-1/2 transform -translate-x-1/2 top-20 mx-auto w-1/2 rounded-md shadow-md dark:bg-gray-700 dark:text-white'>
-                        {
-                            suggestions.map((suggestion,idx)=>{
-                                return (
-                                    <div key={idx} 
-                                    className={`cursor-pointer flex gap-x-1 items-center hover:bg-slate-300 border-b-2 border-gray-200 m-2 p-1 rounded-md ${activeSuggestion===idx ? 'bg-slate-400' : ''}`}
-                                    onClick={()=>{
-                                            handleNavigateToSearchPage(activeSuggestionDispatch,navigate,setSearchQuery,suggestion)
-                                    }}>
-                                        <BiSearchAlt/>
-                                        <p>{suggestion}</p>
-                                    </div>  
-                                )
-                                
-                            })
-                        }
-                    </div>
+                    <Suggestions 
+                        activeSuggestion={activeSuggestion}
+                        activeSuggestionDispatch={activeSuggestionDispatch}
+                        setSearchQuery={setSearchQuery}
+                        handleNavigateToSearchPage={handleNavigateToSearchPage}
+                        suggestions={suggestions}
+                        setSuggestions={setSuggestions}
+                    />
                 )
             }
             {whosWatching && <WhosWatching setWhosWatching={setwhosWatching}/>}

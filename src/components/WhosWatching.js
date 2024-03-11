@@ -4,27 +4,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IoIosLogOut } from "react-icons/io";
 import { addUserName, logout } from '../redux/slices/userSlice';
 import tudum from '../assets/tudum.webm'
+import useClickoutside from '../hooks/useClickOutside';
 
 const WhosWatching = ({setWhosWatching}) => {
-    const whosWatchingRef = useRef(null)
     const username = useSelector((store)=>store.user.username)
     const dispatch = useDispatch()
-    console.log('render')
+    const whosWatchingRef = useClickoutside(()=>setWhosWatching(false),true)
     useEffect(()=>{
-        function handleClose(event){
-            console.log('exec')
-            console.log(event.target)
-            if(!whosWatchingRef.current.contains(event.target)){
-                setWhosWatching(false)
-            }
-        }
-        document.addEventListener('click',handleClose,true)
         const audio = new Audio(tudum)
         audio.play()
-        return () => {
-            document.removeEventListener('click',handleClose,true)
-            audio.pause()
-        }
+        return () => audio.pause()
     },[])
     function handleWhosWatching(event){
         if(event.key==='Enter'){

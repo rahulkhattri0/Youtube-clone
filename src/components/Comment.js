@@ -15,8 +15,9 @@ const Comment = ({ data,setComments,comments,root_id }) => {
         return handleCrudOperations(rootComment,id,text,[false])
       }
     })
-    const filteredRootComments = updatedComments.filter((comment)=>comment!==null)
-    return filteredRootComments
+    let filteredRootComments;
+    if(status==='Delete') filteredRootComments = updatedComments.filter((comment)=>comment!==null)
+    return filteredRootComments ?? updatedComments
   }
 
 
@@ -41,9 +42,10 @@ const Comment = ({ data,setComments,comments,root_id }) => {
       }
       else if(status === 'Delete') return null
     }
+    let filteredReplies;
     const updatedReplies = comment.replies.map((reply)=>handleCrudOperations(reply,id,text,foundFlag))
-    const filteredReplies = updatedReplies.filter((reply)=>reply!==null)
-    return {...comment , replies : filteredReplies}
+    if(status==='Delete') filteredReplies = updatedReplies.filter((reply)=>reply!==null)
+    return {...comment , replies : filteredReplies ?? updatedReplies}
   }
 
 
