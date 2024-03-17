@@ -114,11 +114,9 @@ const Header = () => {
                 suggestions.length>0 && (
                     <Suggestions 
                         activeSuggestion={activeSuggestion}
-                        activeSuggestionDispatch={activeSuggestionDispatch}
-                        setSearchQuery={setSearchQuery}
-                        handleNavigateToSearchPage={handleNavigateToSearchPage}
                         suggestions={suggestions}
                         setSuggestions={setSuggestions}
+                        handleNavigate={()=>handleNavigateToSearchPage(activeSuggestionDispatch,navigate,setSearchQuery,searchQuery)}
                     />
                 )
             }
