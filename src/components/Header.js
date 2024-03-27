@@ -1,19 +1,18 @@
 import React, { useEffect, useReducer, useState } from 'react'
+import { CiLight } from "react-icons/ci"
+import { FaRegUserCircle } from "react-icons/fa"
+import { ImSearch } from 'react-icons/im'
+import { MdOutlineDarkMode } from "react-icons/md"
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import ytlogo_dark from '../assets/ytlogo-dark.png'
 import ytlogo_light from '../assets/ytlogo-light.png'
-import {ImSearch} from 'react-icons/im'
-import { Link, useNavigate } from 'react-router-dom'
-import { YOUTUBE_SEARCH_SUGGESTIONS_API } from '../utils/constants'
-import {BiSearchAlt} from 'react-icons/bi'
-import { useDispatch, useSelector } from 'react-redux'
-import { addEntry } from '../redux/slices/cacheResults'
-import { MdOutlineDarkMode } from "react-icons/md";
-import { toggleDarkTheme } from '../redux/slices/darkModeSlice'
-import { FaRegUserCircle } from "react-icons/fa";
 import { suggestionsReducer } from '../reducers/suggestionsReducer'
-import { CiLight } from "react-icons/ci";
-import WhosWatching from './WhosWatching'
+import { toggleDarkTheme } from '../redux/slices/darkModeSlice'
+import { addEntry } from '../redux/slices/cacheResults'
+import { YOUTUBE_SEARCH_SUGGESTIONS_API } from '../utils/constants'
 import Suggestions from './Suggestions'
+import WhosWatching from './WhosWatching'
 const Header = () => {
     const navigate = useNavigate()
     const [searchQuery,setSearchQuery] = useState("")
@@ -23,17 +22,28 @@ const Header = () => {
     const cacheResults = useSelector((store)=>store.cacheResults)
     const dispatch = useDispatch()
     const theme = useSelector((store)=>store.darkMode.theme)
+    console.log('comp rerender')
+    console.log('suggestionss',suggestions,'search query',searchQuery)
     /*debouncing logic
-    useEffect will we called after every re-render(basically when search query changes) 
+    useEffect will we called when search query changes
     and the timer will be created but if the user presses a key
     in that 200ms time frame,
     the component will re-render and the cleanup function will be called,
     eventually clearing that previous timer and then calling the useEffect function to create a timer,
     now if the user does not press any key in that 200ms time,the API CALL IS MADE.
     */
-   useEffect(()=>{
-    const timer = setTimeout(()=>{
-            activeSuggestionDispatch({type:'reset'})
+   useEffect(()=>{  
+    const getSuggestions = async () => {
+        const response = await fetch(YOUTUBE_SEARCH_SUGGESTIONS_API + searchQuery)
+        console.log("made the api call",response)
+        const data = await response.json()
+        console.log(data[1]) 
+        dispatch(addEntry({
+            [searchQuery] : data[1]
+        }))
+        setSuggestions(data[1])
+    }
+        const timer = setTimeout(()=>{
             if(!searchQuery){
                 setSuggestions([])
             }
@@ -49,17 +59,8 @@ const Header = () => {
         return () => {
             clearTimeout(timer)
         }
-    },[searchQuery])
-   const getSuggestions = async () => {
-    const response = await fetch(YOUTUBE_SEARCH_SUGGESTIONS_API + searchQuery)
-    console.log("made the api call",response)
-    const data = await response.json()
-    console.log(data[1]) 
-    setSuggestions(data[1])
-    dispatch(addEntry({
-        [searchQuery] : data[1]
-    }))
-   }
+    },[searchQuery,dispatch,cacheResults])
+
    function handleKeyDown(event){
     if(suggestions.length>0){
         if(event.key==='ArrowUp'){
@@ -70,12 +71,11 @@ const Header = () => {
         }
     }
     if(event.key==='Enter'){
-        handleNavigateToSearchPage(activeSuggestionDispatch,navigate,setSearchQuery,activeSuggestion>=0 ? suggestions[activeSuggestion] : searchQuery)        
+        handleNavigateToSearchPage(navigate,setSearchQuery,activeSuggestion>=0 ? suggestions[activeSuggestion] : searchQuery)        
     }
    }
-   function handleNavigateToSearchPage(activeSuggestionDispatch,navigate,setSearchQuery,searchQuery){
+   function handleNavigateToSearchPage(navigate,setSearchQuery,searchQuery){
         if(searchQuery){
-            activeSuggestionDispatch({type:'reset'})
             setSearchQuery('')
             navigate(`results?search_query=${searchQuery}`)
         }
@@ -93,7 +93,11 @@ const Header = () => {
                 <input type='text' 
                 className='w-full border rounded-l-full border-gray-200 dark:bg-gray-500 dark:text-white p-2'
                 value={searchQuery}
-                onChange={(event)=>setSearchQuery(event.target.value)}
+                onChange={(event)=>{
+                        activeSuggestionDispatch({type : 'reset'})
+                        setSearchQuery(event.target.value)
+                    }
+                }
                 placeholder='Enter what you want to search...'
                 onKeyDown={handleKeyDown}
                 />
@@ -116,7 +120,7 @@ const Header = () => {
                         activeSuggestion={activeSuggestion}
                         suggestions={suggestions}
                         setSuggestions={setSuggestions}
-                        handleNavigate={()=>handleNavigateToSearchPage(activeSuggestionDispatch,navigate,setSearchQuery,searchQuery)}
+                        handleNavigate={()=>handleNavigateToSearchPage(navigate,setSearchQuery,searchQuery)}
                     />
                 )
             }

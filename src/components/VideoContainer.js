@@ -7,14 +7,15 @@ import Shimmer from './Shimmer'
 const VideoContainer = () => {
     const [videos,setVideos] = useState([])
     useEffect(()=>{
+        const getVideos = async () =>{
+            const response = await fetch(YOUTUBE_VID_API)
+            const data = await response.json()
+            console.log(data)
+            setVideos(data.items)
+        }
         getVideos()
     },[])
-    const getVideos = async () =>{
-        const response = await fetch(YOUTUBE_VID_API)
-        const data = await response.json()
-        console.log(data)
-        setVideos(data.items)
-    }
+    
   return (
     <div className='flex flex-wrap justify-center items-baseline mt-24'>
         {

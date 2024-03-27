@@ -9,15 +9,16 @@ const SearchResults = () => {
     const query = searchParams.get("search_query")
     const [searchResults,setSearchResults] = useState(null)
     useEffect(()=>{
+        const fetchResults = async () => {
+            console.log(query)
+            const response = await fetch(YOUTUBE_SEARCH_VIDS + query)
+            const data = await response.json()
+            console.log("search res",data)
+            setSearchResults(data.items)
+        }
         fetchResults()
     },[query])
-    const fetchResults = async () => {
-        console.log(query)
-        const response = await fetch(YOUTUBE_SEARCH_VIDS + query)
-        const data = await response.json()
-        console.log("search res",data)
-        setSearchResults(data.items)
-    }
+   
     if(!searchResults){
         return <Shimmer/>
     }
