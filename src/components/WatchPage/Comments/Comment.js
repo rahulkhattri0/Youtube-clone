@@ -1,55 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { useUpdateComments } from "./useUpdateComments";
 
 
 const Comment = ({ data,setComments,comments,root_id }) => {
   const username = useSelector((store)=>store.user.username)
 
+  const [status,setStatus,getUpdatedComments] = useUpdateComments()
   
-  function getUpdatedComments(root_id,comments,text,id){
-    const updatedComments = comments.map((rootComment)=>{
-      if(root_id!==rootComment.root_id) return rootComment
-      else{
-        return handleCrudOperations(rootComment,id,text,[false])
-      }
-    })
-    let filteredRootComments;
-    if(status==='Delete') filteredRootComments = updatedComments.filter((comment)=>comment!==null)
-    return filteredRootComments ?? updatedComments
-  }
-
-
-  function handleCrudOperations(comment,id,text,foundFlag){
-    if(foundFlag[0]) return comment;
-    if(comment.id===id){
-      foundFlag[0] = true
-      if(status==='Add') return {
-        ...comment,
-        replies : [
-          ...comment.replies,
-          {
-            id : Date.now(),
-            text : text,
-            replies : []
-          }
-        ]
-      }
-      else if(status === 'Edit') return {
-        ...comment,
-        text : text
-      }
-      else if(status === 'Delete') return null
-    }
-    let filteredReplies;
-    const updatedReplies = comment.replies.map((reply)=>handleCrudOperations(reply,id,text,foundFlag))
-    if(status==='Delete') filteredReplies = updatedReplies.filter((reply)=>reply!==null)
-    return {...comment , replies : filteredReplies ?? updatedReplies}
-  }
-
-
-  const [status,setStatus] = useState(null)
   const replyRef = useRef()
   return (
     <div className="flex flex-col gap-y-4 dark:text-white">
@@ -90,7 +50,7 @@ const Comment = ({ data,setComments,comments,root_id }) => {
       </form>}
       {
         status==='Delete' && <div className="flex gap-3 items-center">
-          <button className="bg-green-500 rounded-lg pl-2 pr-2" onClick={()=>{
+          <button className="bg-red-500 rounded-lg pl-2 pr-2" onClick={()=>{
             const updatedComments = getUpdatedComments(root_id,comments,'',data.id)
             setComments(updatedComments)
             setStatus(null)

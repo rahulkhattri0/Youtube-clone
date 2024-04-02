@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ChatMessages from './ChatMessages'
-import { addMessages, resetMessages } from '../redux/slices/chatSlice'
-import { RANDOM_MESSAGE_API, RANDOM_NAME_API } from '../utils/constants'
+import { addMessages, resetMessages } from '../../redux/slices/chatSlice'
+import { RANDOM_MESSAGE_API, RANDOM_NAME_API } from '../../utils/constants'
 
 
 const LiveMessages = () => {

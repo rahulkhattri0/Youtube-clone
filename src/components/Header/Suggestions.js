@@ -1,12 +1,12 @@
 import React from 'react'
 import { BiSearchAlt } from 'react-icons/bi'
-import useClickoutside from '../hooks/useClickOutside'
+import useClickoutside from '../../hooks/useClickOutside'
 
 const Suggestions = ({
     suggestions,
     setSuggestions,
-    handleNavigate,
     activeSuggestion,
+    handleNavigate
 }) => {
     const suggestionsRef = useClickoutside(()=>setSuggestions([]),false)
   return (
@@ -17,11 +17,10 @@ const Suggestions = ({
                     <div key={idx} 
                     className={`cursor-pointer flex gap-x-1 items-center hover:bg-slate-300 border-b-2 border-gray-200 m-2 p-1 rounded-md ${activeSuggestion===idx ? 'bg-slate-400' : ''}`}
                     onClick={()=>{
-                            console.log('before')
-                            handleNavigate()
+                            handleNavigate(suggestion.value)
                     }}>
                         <BiSearchAlt/>
-                        <p>{suggestion}</p>
+                        <p>{suggestion.value}</p>
                     </div>  
                 )
                 

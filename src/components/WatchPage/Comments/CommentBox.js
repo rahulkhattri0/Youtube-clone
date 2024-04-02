@@ -20,7 +20,7 @@ const CommentBox = () => {
             setComments([
               ...comments,
               {
-                root_id : comments.length,
+                root_id : comments.length===0 ? 0 : comments[comments.length-1].root_id + 1,
                 id : Date.now(),
                 text : comment,
                 replies : []
@@ -30,7 +30,7 @@ const CommentBox = () => {
           inputRef.current.value = ""
         }}>
             <input type="text" placeholder="Add Comment..." className="p-1 w-[90%] bg-slate-200 dark:bg-gray-700 rounded-lg" ref={inputRef}/>
-            <button className="rounded-md bg-green-400 text-white p-1 w-[10%]" type="submit">Add</button>
+            <button className="rounded-md bg-red-700 text-white p-1 w-[10%]" type="submit">Add</button>
         </form>
     </div>
   );

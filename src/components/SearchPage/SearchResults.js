@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { YOUTUBE_SEARCH_VIDS } from '../utils/constants'
+import { YOUTUBE_SEARCH_VIDS } from '../../utils/constants'
 import SearchVideoCard from './SearchVideoCard'
-import Shimmer from './Shimmer'
+import Shimmer from '../Common/Shimmer'
 
 const SearchResults = () => {
     const [searchParams] = useSearchParams()

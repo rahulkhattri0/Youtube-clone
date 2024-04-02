@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useSearchParams } from "react-router-dom";
+import { addMessages } from '../../redux/slices/chatSlice';
 import LiveMessages from './LiveMessages';
-import { useDispatch, useSelector } from 'react-redux';
-import { addMessages } from '../redux/slices/chatSlice';
-import CommentBox from './CommentBox';
+import CommentBox from './Comments/CommentBox';
 const WatchPage = () => {
   
   const [searchParams] = useSearchParams()
@@ -44,7 +44,7 @@ const WatchPage = () => {
                   onChange={(event)=>setLiveMsg(event.target.value)}
                   />
                   <button 
-                  className='p-1 bg-green-300 text-white rounded-md w-[20%]'
+                  className='p-1 bg-red-700 text-white rounded-md w-[20%]'
                   type='submit'>Send</button>
                 </form>
               </div>

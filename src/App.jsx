@@ -1,9 +1,9 @@
 import "./App.css";
-import Body from "./components/Body";
-import Header from "./components/Header";
+import Body from "./components/Body/Body";
+import Header from "./components/Header/Header";
 import { Route, Routes } from "react-router-dom";
-import WatchPage from "./components/WatchPage";
-import SearchResults from "./components/SearchResults";
+import WatchPage from "./components/WatchPage/WatchPage";
+import SearchResults from "./components/SearchPage/SearchResults";
 import { useSelector } from "react-redux";
 function App() {
   const theme = useSelector((store)=>store.darkMode.theme)

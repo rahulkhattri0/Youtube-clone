@@ -5,12 +5,12 @@ import { ImSearch } from 'react-icons/im'
 import { MdOutlineDarkMode } from "react-icons/md"
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import ytlogo_dark from '../assets/ytlogo-dark.png'
-import ytlogo_light from '../assets/ytlogo-light.png'
-import { suggestionsReducer } from '../reducers/suggestionsReducer'
-import { toggleDarkTheme } from '../redux/slices/darkModeSlice'
-import { addEntry } from '../redux/slices/cacheResults'
-import { YOUTUBE_SEARCH_SUGGESTIONS_API } from '../utils/constants'
+import ytlogo_dark from '../../assets/ytlogo-dark.png'
+import ytlogo_light from '../../assets/ytlogo-light.png'
+import { suggestionsReducer } from '../../reducers/suggestionsReducer'
+import { toggleDarkTheme } from '../../redux/slices/darkModeSlice'
+import { addEntry } from '../../redux/slices/cacheResults'
+import { YOUTUBE_SEARCH_SUGGESTIONS_API } from '../../utils/constants'
 import Suggestions from './Suggestions'
 import WhosWatching from './WhosWatching'
 const Header = () => {
@@ -37,11 +37,11 @@ const Header = () => {
         const response = await fetch(YOUTUBE_SEARCH_SUGGESTIONS_API + searchQuery)
         console.log("made the api call",response)
         const data = await response.json()
-        console.log(data[1]) 
+        console.log(data.suggestions) 
         dispatch(addEntry({
-            [searchQuery] : data[1]
+            [searchQuery] : data.suggestions
         }))
-        setSuggestions(data[1])
+        setSuggestions(data.suggestions)
     }
         const timer = setTimeout(()=>{
             if(!searchQuery){
@@ -71,10 +71,10 @@ const Header = () => {
         }
     }
     if(event.key==='Enter'){
-        handleNavigateToSearchPage(navigate,setSearchQuery,activeSuggestion>=0 ? suggestions[activeSuggestion] : searchQuery)        
+        handleNavigateToSearchPage(activeSuggestion>=0 ? suggestions[activeSuggestion].value : searchQuery)        
     }
    }
-   function handleNavigateToSearchPage(navigate,setSearchQuery,searchQuery){
+   function handleNavigateToSearchPage(searchQuery){
         if(searchQuery){
             setSearchQuery('')
             navigate(`results?search_query=${searchQuery}`)
@@ -102,7 +102,7 @@ const Header = () => {
                 onKeyDown={handleKeyDown}
                 />
                 <button className='p-2 border-gray-200 rounded-r-full bg-gray-200' onClick={()=>{
-                    handleNavigateToSearchPage(activeSuggestionDispatch,navigate,setSearchQuery,searchQuery)
+                    handleNavigateToSearchPage(searchQuery)
                 }}>
                     <ImSearch/>
                 </button>
@@ -120,7 +120,7 @@ const Header = () => {
                         activeSuggestion={activeSuggestion}
                         suggestions={suggestions}
                         setSuggestions={setSuggestions}
-                        handleNavigate={()=>handleNavigateToSearchPage(navigate,setSearchQuery,searchQuery)}
+                        handleNavigate={handleNavigateToSearchPage}
                     />
                 )
             }

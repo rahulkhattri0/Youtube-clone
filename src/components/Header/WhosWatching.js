@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react'
-import whowatching from '../assets/whowatching.jpg'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect } from 'react';
 import { IoIosLogOut } from "react-icons/io";
-import { addUserName, logout } from '../redux/slices/userSlice';
-import tudum from '../assets/tudum.webm'
-import useClickoutside from '../hooks/useClickOutside';
+import { useDispatch, useSelector } from 'react-redux';
+import tudum from '../../assets/tudum.webm';
+import useClickoutside from '../../hooks/useClickOutside';
+import { addUserName, logout } from '../../redux/slices/userSlice';
+import whowatching from '../../assets/whowatching.jpg';
 
 const WhosWatching = ({setWhosWatching}) => {
     const username = useSelector((store)=>store.user.username)
