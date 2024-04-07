@@ -1,57 +1,59 @@
 import { useState } from "react"
+import { produce } from 'immer'
 
 export const useUpdateComments = () =>{
 
     const [status,setStatus] = useState(null)
-  function getUpdatedComments(root_id,comments,text,id){
-    const updatedComments = []
-    for(const rootComment of comments){
-      if(status==='Delete' && rootComment.id===id) return comments.filter((comment)=>comment.id!==id)
-      else{
-        if(rootComment.root_id===root_id){
-          updatedComments.push(handleCrudOperations(rootComment,id,text,[false]))
+  function getUpdatedComments(comments,text,id){
+    
+    const updatedComments = produce(comments,(draftComments)=>{
+
+      const foundFlag = [false]
+      for(const rootComment of draftComments){
+        if(status==='Delete' && rootComment.id===id){
+           handleDelete(draftComments,id)
+           break
         }
-        else updatedComments.push(rootComment)
+        else if(!foundFlag[0]) handleCrudOperations(rootComment,id,text,foundFlag)
       }
-    }
+    })
     return updatedComments
   }
 
-
-  function handleCrudOperations(comment,id,text,foundFlag){
-    if(foundFlag[0]) return comment;
-    if(comment.id===id){
-      foundFlag[0] = true
-      if(status==='Add') return {
-        ...comment,
-        replies : [
-          ...comment.replies,
-          {
-            id : Date.now(),
-            text : text,
-            replies : []
-          }
-        ]
-      }
-      else if(status === 'Edit') return {
-        ...comment,
-        text : text
+  function handleDelete(comments,deleteId){
+    let deleteIndex;
+    for (let index = 0; index < comments.length; index++) {
+      const comment = comments[index];
+      if(comment.id===deleteId){
+        deleteIndex = index
+        break
       }
     }
+    comments.splice(deleteIndex,1)
+  }
 
-    let updatedReplies = []
+  function handleCrudOperations(comment,id,text,foundFlag){
+    
+    if(foundFlag[0]) return ;
+    if(comment.id===id){
+      foundFlag[0] = true
+      if(status==='Add') comment.replies.push({
+        id : Date.now(),
+        text,
+        replies:[]
+      })
+      else if(status === 'Edit') comment.text = text
+      return
+    }
 
     for(const reply of comment.replies){
       if(reply.id===id && status==='Delete'){
         foundFlag[0] = true
-        const filteredReplies = comment.replies.filter((reply)=>reply.id!==id)
-        return {...comment , replies : filteredReplies}
+        handleDelete(comment.replies,id)
+        return
       }
-      else updatedReplies.push(handleCrudOperations(reply,id,text,foundFlag))
+      else handleCrudOperations(reply,id,text,foundFlag)
     }
-
-
-    return {...comment , replies : updatedReplies}
   }
 
   return [status,setStatus,getUpdatedComments]

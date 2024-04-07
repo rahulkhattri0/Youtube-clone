@@ -1,6 +1,6 @@
+import { produce } from 'immer';
 import { useRef, useState } from "react";
 import Comment from "./Comment";
-// import { comments } from "../data/commentData";
 const CommentBox = () => {
   const [comments,setComments] = useState([])
   const inputRef = useRef(null)
@@ -10,22 +10,22 @@ const CommentBox = () => {
         <p className="font-bold text-2xl">Comments:</p>
         { comments.length === 0 ? <p className="text-md">No Comments!</p> : <div className="p-2 flex flex-col gap-y-4 bg-slate-300 dark:bg-gray-700 rounded-lg">
             {comments.map((c) => {
-             return <Comment  root_id={c.root_id} key={c.id} data={c} comments={comments} setComments={setComments}/>
+             return <Comment key={c.id} data={c} comments={comments} setComments={setComments}/>
             })}
         </div>}
         <form className="flex flex-row gap-x-2 p-4" onSubmit={(e)=>{
           e.preventDefault()
           const comment = inputRef.current.value
           if(comment){
-            setComments([
-              ...comments,
-              {
-                root_id : comments.length===0 ? 0 : comments[comments.length-1].root_id + 1,
-                id : Date.now(),
-                text : comment,
-                replies : []
+            const newComments = produce(comments,(draft)=>{
+                draft.push({
+                  id:Date.now(),
+                  text : comment,
+                  replies : []
+                })
               }
-            ])
+            )
+            setComments(newComments)
           }
           inputRef.current.value = ""
         }}>

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useUpdateComments } from "./useUpdateComments";
 
 
-const Comment = ({ data,setComments,comments,root_id }) => {
+const Comment = ({ data,setComments,comments }) => {
   const username = useSelector((store)=>store.user.username)
 
   const [status,setStatus,getUpdatedComments] = useUpdateComments()
@@ -25,15 +25,14 @@ const Comment = ({ data,setComments,comments,root_id }) => {
       </div>
       { data.replies.length > 0 && <div className="flex flex-col gap-y-2 p-8 border-l-2 border-black">
         {data.replies.map((reply) => {
-          return <Comment root_id={root_id} key={reply.id} data={reply} setComments={setComments} comments={comments} />;
+          return <Comment key={reply.id} data={reply} setComments={setComments} comments={comments} />;
         })}
       </div>}
       {(status==='Add' || status==='Edit') && <form className="flex flex-row gap-x-2" onSubmit={(e)=>{
         e.preventDefault()
         const text = replyRef.current.value
         if(text){
-          console.log('this is text',text)
-          const updatedComments = getUpdatedComments(root_id,comments,text,data.id)
+          const updatedComments = getUpdatedComments(comments,text,data.id)
           setComments(updatedComments)
         }
         setStatus(null)
@@ -51,7 +50,7 @@ const Comment = ({ data,setComments,comments,root_id }) => {
       {
         status==='Delete' && <div className="flex gap-3 items-center">
           <button className="bg-red-500 rounded-lg pl-2 pr-2" onClick={()=>{
-            const updatedComments = getUpdatedComments(root_id,comments,'',data.id)
+            const updatedComments = getUpdatedComments(comments,'',data.id)
             setComments(updatedComments)
             setStatus(null)
             }}>Yes</button>
